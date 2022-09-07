@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Backend\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -23,6 +25,16 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return view('admin.index');
+    })->name('index');
+});
+//Admin route 
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/admin/logout', 'Logout')->name('admin.logout');     
+});
+//User route
+Route::controller(UserController::class)->group(function () {
+    //Route::prefix('User')->group(function(){});
+    Route::get('/User/View','User_View')->name('User.view'); 
+        
 });
